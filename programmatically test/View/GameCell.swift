@@ -9,7 +9,13 @@
 import Foundation
 import UIKit
 
+protocol GameCellDelegate {
+    func nextPage()
+}
+
 class GameCell: UITableViewCell {
+    
+    var delegate : GameCellDelegate?
     
     var gameNames : GameName? {
         gameNameLabel.text = gameNames?.name
@@ -23,6 +29,13 @@ class GameCell: UITableViewCell {
         return label
     }()
     
+    @objc func playColor(){
+    click()
+    }
+    
+    func click(){
+        delegate?.nextPage()
+    }
     
     private let playColorButton : UIButton = {
         let button = UIButton.init(type: UIButton.ButtonType.system)
@@ -36,11 +49,6 @@ class GameCell: UITableViewCell {
         return button
     }()
     
-    @objc func playColor(_ : UIButton){
-        
-        print("Tapped")
-
-    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -50,8 +58,6 @@ class GameCell: UITableViewCell {
         playColorButton.addTarget(self, action: #selector(playColor), for: .touchUpInside)
         playColorButton.anchor(top: topAnchor, left: gameNameLabel.leftAnchor
             , bottom: bottomAnchor, right: rightAnchor, paddingTop: 15.0, paddingLeft: 300.0, paddingBottom: 15.0, paddingRight: 10.0, width: 100, height: 30, enableInsets: false)
-
-        
     }
     
     

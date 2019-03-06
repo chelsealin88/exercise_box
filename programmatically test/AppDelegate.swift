@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let homePage = HomePageTableViewController()
         let navigationController = UINavigationController(rootViewController: homePage)
         window?.rootViewController = navigationController
+        
         // Override point for customization after application launch.
         return true
     }

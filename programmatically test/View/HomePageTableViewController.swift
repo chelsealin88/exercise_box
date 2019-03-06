@@ -29,6 +29,7 @@ class HomePageTableViewController: UITableViewController {
         let gameItem = gameName[indexPath.row]
         cell.textLabel?.text = gameItem.name
         cell.translatesAutoresizingMaskIntoConstraints = false
+        cell.delegate = self
         return cell
     }
     
@@ -37,7 +38,21 @@ class HomePageTableViewController: UITableViewController {
     }
     
     func createGameArray(){
-        gameName.append(GameName(name: "Choose Color"))
+        gameName.append(GameName(name: "Choose Kolor"))
+        
+    }
+    
+    
+}
+
+extension HomePageTableViewController : GameCellDelegate {
+    
+    func nextPage() {
+        let vc = ChooseColorViewController()
+        navigationController?.pushViewController(vc, animated: true)
+        
     }
     
 }
+
+
