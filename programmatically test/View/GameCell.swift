@@ -10,34 +10,37 @@ import Foundation
 import UIKit
 
 protocol GameCellDelegate {
-    func nextPage()
+    
+    func nextPage(vc: UIViewController)
 }
 
 class GameCell: UITableViewCell {
     
+    var playItem: GameName!
     var delegate : GameCellDelegate?
     
-    var gameNames : GameName? {
-        gameNameLabel.text = gameNames?.name
-        return gameNames
-    }
+    //    var gameNames : GameName? {
+    //        gameNameLabel.text = gameNames?.name
+    //        return gameNames
+    //    }
     
     
-    private let gameNameLabel : UILabel = {
+    let gameNameLabel : UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.red
+        label.textColor = UIColor.black
         return label
     }()
     
+    
     @objc func playColor(){
-    click()
+        click()
     }
     
     func click(){
-        delegate?.nextPage()
+        delegate?.nextPage(vc: playItem.vc)
     }
     
-    private let playColorButton : UIButton = {
+    let playColorButton : UIButton = {
         let button = UIButton.init(type: UIButton.ButtonType.system)
         button.setTitle("Play", for: .normal)
         button.layer.borderWidth = 2.0
@@ -65,7 +68,7 @@ class GameCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-        
+    
+    
 }
 

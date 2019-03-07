@@ -15,10 +15,10 @@ class HomePageTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         createGameArray()
-        
         navigationItem.title = "Exercise Box"
         tableView.register(GameCell.self, forCellReuseIdentifier: "cellID")
     }
+    
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return gameName.count
@@ -27,30 +27,28 @@ class HomePageTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellID", for: indexPath) as! GameCell
         let gameItem = gameName[indexPath.row]
+        cell.playItem = gameItem
         cell.textLabel?.text = gameItem.name
-        cell.translatesAutoresizingMaskIntoConstraints = false
         cell.delegate = self
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
-    }
-    
+    // MARK: - 新增遊戲名稱
     func createGameArray(){
-        gameName.append(GameName(name: "Choose Kolor"))
         
+        gameName.append(GameName(name: "Choose Kolor", vc: ChooseColorViewController()))
+        gameName.append(GameName(name: "# + # = ? ", vc: PlusNumberViewController()))
+        
+        tableView.reloadData()
+    
     }
-    
-    
 }
 
 extension HomePageTableViewController : GameCellDelegate {
     
-    func nextPage() {
-        let vc = ChooseColorViewController()
+    func nextPage(vc: UIViewController) {
         navigationController?.pushViewController(vc, animated: true)
-        
+    
     }
     
 }

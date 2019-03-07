@@ -21,10 +21,10 @@ class ChooseColorViewController: UIViewController {
         titleLabel()
         createGames()
         makeImageViews(topic: "q1", options: games[0].options)
-        print(games[0].options)
+        //        print(games[0].options)
     }
     
-    
+    // MARK: - 標題
     func titleLabel() {
         
         var label = UILabel(frame: CGRect(x: 110, y: 60, width: 200, height: 100))
@@ -35,47 +35,75 @@ class ChooseColorViewController: UIViewController {
         
     }
     
+    // MARK: - 產生每一局遊戲
     func createGames() {
         let game1 = ColorGame(topic: "q1", answer: 3)
+        let game2 = ColorGame(topic: "q2", answer: 3)
+        let game3 = ColorGame(topic: "q3", answer: 3)
         games.append(game1)
+        games.append(game2)
+        games.append(game3)
     }
     
+    // MARK: - 製作題目
     func makeImageViews(topic: String ,options: [String]) {
         
         var topicimage : UIImageView
         topicimage = UIImageView(frame: CGRect(x: 0, y: 150, width: 500 , height: 300))
         topicimage.image = UIImage(named: "q1")
+        
         view.addSubview(topicimage)
         
-        for index in options.indices {
+        let suffledOptions = options.shuffled()
+        for index in suffledOptions.indices {
             let button = UIButton()
-            let width = Int(view.bounds.width) / options.count
+            let width = Int(view.bounds.width) / suffledOptions.count
             button.frame = CGRect(x: index * width, y: 550, width: width, height: width)
-            let buttonimage = UIImage(named: options[index])
+            let buttonimage = UIImage(named: suffledOptions[index])
             button.setImage(buttonimage, for: .normal)
+            button.setTitle(suffledOptions[index], for: .normal)
+            button.setTitleColor(.clear, for: .normal)
             button.tag = index
-            //            button.addTarget(<#T##target: Any?##Any?#>, action: <#T##Selector#>, for: <#T##UIControl.Event#>)
-            //            buttons.append(<#T##newElement: UIButton##UIButton#>)
+            button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+            //            #if DEBUG
+            //            print("index:",suffledOptions[index])
+            //            #endif
             view.addSubview(button)
         }
         
     }
     
+    @objc func buttonAction(_ sender: UIButton){
+        
+        if let title = sender.currentTitle {
+            let index = title.index(before: title.endIndex)
+            let answer = title[index]
+            let character: Character = "4"
+            if character == answer {
+                
+                let alert = UIAlertController(title: "Bingo", message: "", preferredStyle: UIAlertController.Style.alert)
+                let okAction = UIAlertAction(title: "Go to next game", style: UIAlertAction.Style.default) { (result : UIAlertAction) -> Void in
+                    
+                    //                    self.makeImageViews(topic: "q2", options: self.games[1].options)
+                    let vc = PlusNumberViewController()
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
+                alert.addAction(okAction)
+                self.present(alert, animated: true, completion: nil)
+                
+            } else { // Wrong Ans
+                
+                let alert = UIAlertController(title: "Wrong Answer", message: "", preferredStyle: UIAlertController.Style.alert)
+                let okAction = UIAlertAction(title: "Try Again", style: UIAlertAction.Style.default) { (result : UIAlertAction) -> Void in
+                    
+                }
+                alert.addAction(okAction)
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+        
+    }
+    
 }
-
-
-
-
-
-/*
- // MARK: - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
- // Get the new view controller using segue.destination.
- // Pass the selected object to the new view controller.
- }
- */
-
 
 

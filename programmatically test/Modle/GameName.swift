@@ -11,4 +11,11 @@ import UIKit
 
 struct GameName {
     var name : String
+    var vc : UIViewController
+    
+    init(name: String, vc: UIViewController) {
+        self.name = name
+        self.vc = vc
+    }
+    
 }
