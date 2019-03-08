@@ -93,8 +93,8 @@ class ChooseColorViewController: UIViewController {
                 
             } else { // Wrong Ans
                 
-                let alert = UIAlertController(title: "Wrong Answer", message: "", preferredStyle: UIAlertController.Style.alert)
-                let okAction = UIAlertAction(title: "Try Again", style: UIAlertAction.Style.default) { (result : UIAlertAction) -> Void in
+                let alert = UIAlertController(title: "有障礙？", message: "", preferredStyle: UIAlertController.Style.alert)
+                let okAction = UIAlertAction(title: "再玩一次", style: UIAlertAction.Style.default) { (result : UIAlertAction) -> Void in
                     
                 }
                 alert.addAction(okAction)

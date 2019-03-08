@@ -54,7 +54,7 @@ class PlusNumberViewController: UIViewController {
         //        myStackView.addArrangedSubview()
     }
     
-    
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Plus Number"
@@ -67,9 +67,15 @@ class PlusNumberViewController: UIViewController {
         equalImage()
         startTime()
         
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .done, target: self, action: #selector(backAction))
+        
         self.ansTextField.frame = CGRect(x: 150, y: 320, width: 100, height: 50)
         view.addSubview(self.ansTextField)
         view.addSubview(self.timeLabel)
+    }
+    
+    @objc func backAction(){
+        navigationController?.popToRootViewController(animated: true)
     }
     
     // MARK: - 生成數字
@@ -132,9 +138,10 @@ class PlusNumberViewController: UIViewController {
             let alert = UIAlertController(title: "Bingo", message: "", preferredStyle: UIAlertController.Style.alert)
             let okAction = UIAlertAction(title: "Go to next game", style: UIAlertAction.Style.default) { (result : UIAlertAction) -> Void in
                 
+                self.endTime()
                 
-//                let vc = PlusNumberViewController()
-//                self.navigationController?.pushViewController(vc, animated: true)
+                let vc = WordGameViewController()
+                self.navigationController?.pushViewController(vc, animated: true)
             }
             alert.addAction(okAction)
             self.present(alert, animated: true, completion: nil)
@@ -142,7 +149,7 @@ class PlusNumberViewController: UIViewController {
         } else {
             
             
-            let alert = UIAlertController(title: "Wrong Answer", message: "", preferredStyle: UIAlertController.Style.alert)
+            let alert = UIAlertController(title: "智障？", message: "", preferredStyle: UIAlertController.Style.alert)
             let okAction = UIAlertAction(title: "Try Again", style: UIAlertAction.Style.default) { (result : UIAlertAction) -> Void in
                 
                 self.ansTextField.text = ""
@@ -153,8 +160,7 @@ class PlusNumberViewController: UIViewController {
     }
     
     
-    /******** TIMER **********/
-    
+    // MARK: - TIMER
     func startTime(){
         
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)

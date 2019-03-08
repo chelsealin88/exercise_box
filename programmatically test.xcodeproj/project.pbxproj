@@ -17,6 +17,9 @@
 		5ED8D597222E5EA600023BF8 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED8D596222E5EA600023BF8 /* Extension.swift */; };
 		5ED8D599222F6C0B00023BF8 /* ColorGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED8D598222F6C0B00023BF8 /* ColorGame.swift */; };
 		5ED8D59B2230A6BD00023BF8 /* PlusNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED8D59A2230A6BD00023BF8 /* PlusNumberViewController.swift */; };
+		5ED8D5BB22310D2E00023BF8 /* WordGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED8D5BA22310D2E00023BF8 /* WordGameViewController.swift */; };
+		5ED8D5BD2231151F00023BF8 /* WordGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED8D5BC2231151F00023BF8 /* WordGame.swift */; };
+		5ED8D5C1223201D000023BF8 /* Timecountdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED8D5C0223201D000023BF8 /* Timecountdown.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +35,9 @@
 		5ED8D596222E5EA600023BF8 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		5ED8D598222F6C0B00023BF8 /* ColorGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorGame.swift; sourceTree = "<group>"; };
 		5ED8D59A2230A6BD00023BF8 /* PlusNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusNumberViewController.swift; sourceTree = "<group>"; };
+		5ED8D5BA22310D2E00023BF8 /* WordGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordGameViewController.swift; sourceTree = "<group>"; };
+		5ED8D5BC2231151F00023BF8 /* WordGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordGame.swift; sourceTree = "<group>"; };
+		5ED8D5C0223201D000023BF8 /* Timecountdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timecountdown.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +87,7 @@
 				5ED8D592222E4DB900023BF8 /* GameCell.swift */,
 				5ED8D58F222E456200023BF8 /* ChooseColorViewController.swift */,
 				5ED8D59A2230A6BD00023BF8 /* PlusNumberViewController.swift */,
+				5ED8D5BA22310D2E00023BF8 /* WordGameViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -91,6 +98,8 @@
 				5ED8D594222E4E1300023BF8 /* GameName.swift */,
 				5ED8D596222E5EA600023BF8 /* Extension.swift */,
 				5ED8D598222F6C0B00023BF8 /* ColorGame.swift */,
+				5ED8D5BC2231151F00023BF8 /* WordGame.swift */,
+				5ED8D5C0223201D000023BF8 /* Timecountdown.swift */,
 			);
 			path = Modle;
 			sourceTree = "<group>";
@@ -170,7 +179,10 @@
 				5ED8D595222E4E1300023BF8 /* GameName.swift in Sources */,
 				5ED8D590222E456200023BF8 /* ChooseColorViewController.swift in Sources */,
 				5E29DE90222CEBFE00A06B45 /* AppDelegate.swift in Sources */,
+				5ED8D5BB22310D2E00023BF8 /* WordGameViewController.swift in Sources */,
 				5ED8D59B2230A6BD00023BF8 /* PlusNumberViewController.swift in Sources */,
+				5ED8D5C1223201D000023BF8 /* Timecountdown.swift in Sources */,
+				5ED8D5BD2231151F00023BF8 /* WordGame.swift in Sources */,
 				5ED8D599222F6C0B00023BF8 /* ColorGame.swift in Sources */,
 				5ED8D593222E4DB900023BF8 /* GameCell.swift in Sources */,
 			);

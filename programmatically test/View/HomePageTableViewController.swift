@@ -38,6 +38,7 @@ class HomePageTableViewController: UITableViewController {
         
         gameName.append(GameName(name: "Choose Kolor", vc: ChooseColorViewController()))
         gameName.append(GameName(name: "# + # = ? ", vc: PlusNumberViewController()))
+        gameName.append(GameName(name: "What dose this 'word' mean?", vc: WordGameViewController()))
         
         tableView.reloadData()
     
