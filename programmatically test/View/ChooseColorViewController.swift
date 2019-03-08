@@ -10,7 +10,16 @@ import UIKit
 
 class ChooseColorViewController: UIViewController {
     
+    //    var gameSection: Int = 0
+    var level = 0
+    
     var games = [ColorGame]()
+    
+    let topicimage : UIImageView = {
+        let image = UIImageView(frame: CGRect(x: 0, y: 150, width: 500 , height: 300))
+        return image
+    }()
+    
     
     
     // MARK: - Life Cycle
@@ -18,10 +27,11 @@ class ChooseColorViewController: UIViewController {
         super.viewDidLoad()
         navigationItem.title = "Choose Kolor"
         view.backgroundColor = .white
+        
         titleLabel()
         createGames()
-        makeImageViews(topic: "q1", options: games[0].options)
-        //        print(games[0].options)
+        optionsMaker(options: games[1].options)
+        gameSetting(topic: "q2", options: games[1].options)
     }
     
     // MARK: - 標題
@@ -45,35 +55,11 @@ class ChooseColorViewController: UIViewController {
         games.append(game3)
     }
     
-    // MARK: - 製作題目
-    func makeImageViews(topic: String ,options: [String]) {
-        
-        var topicimage : UIImageView
-        topicimage = UIImageView(frame: CGRect(x: 0, y: 150, width: 500 , height: 300))
-        topicimage.image = UIImage(named: "q1")
-        
-        view.addSubview(topicimage)
-        
-        let suffledOptions = options.shuffled()
-        for index in suffledOptions.indices {
-            let button = UIButton()
-            let width = Int(view.bounds.width) / suffledOptions.count
-            button.frame = CGRect(x: index * width, y: 550, width: width, height: width)
-            let buttonimage = UIImage(named: suffledOptions[index])
-            button.setImage(buttonimage, for: .normal)
-            button.setTitle(suffledOptions[index], for: .normal)
-            button.setTitleColor(.clear, for: .normal)
-            button.tag = index
-            button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
-            //            #if DEBUG
-            //            print("index:",suffledOptions[index])
-            //            #endif
-            view.addSubview(button)
-        }
-        
-    }
-    
+    // MARK: - 判斷答案
     @objc func buttonAction(_ sender: UIButton){
+        
+        guard level < 2 else { return }
+        level += 1
         
         if let title = sender.currentTitle {
             let index = title.index(before: title.endIndex)
@@ -81,17 +67,19 @@ class ChooseColorViewController: UIViewController {
             let character: Character = "4"
             if character == answer {
                 
-                let alert = UIAlertController(title: "Bingo", message: "", preferredStyle: UIAlertController.Style.alert)
-                let okAction = UIAlertAction(title: "Go to next game", style: UIAlertAction.Style.default) { (result : UIAlertAction) -> Void in
+                let alert = UIAlertController(title: "答對惹", message: "", preferredStyle: UIAlertController.Style.alert)
+                let okAction = UIAlertAction(title: "👉🏻下一關", style: UIAlertAction.Style.default) { (result : UIAlertAction) -> Void in
                     
-                    //                    self.makeImageViews(topic: "q2", options: self.games[1].options)
-                    let vc = PlusNumberViewController()
-                    self.navigationController?.pushViewController(vc, animated: true)
+                    let level =  self.level
+                    self.gameSetting(topic: "q\(level)", options: self.games[0].options)
+                    
+                    //                    let vc = PlusNumberViewController()
+                    //                    self.navigationController?.pushViewController(vc, animated: true)
                 }
                 alert.addAction(okAction)
                 self.present(alert, animated: true, completion: nil)
                 
-            } else { // Wrong Ans
+            } else { // 判斷錯誤答案
                 
                 let alert = UIAlertController(title: "有障礙？", message: "", preferredStyle: UIAlertController.Style.alert)
                 let okAction = UIAlertAction(title: "再玩一次", style: UIAlertAction.Style.default) { (result : UIAlertAction) -> Void in
@@ -102,6 +90,47 @@ class ChooseColorViewController: UIViewController {
             }
         }
         
+    }
+    
+}
+
+
+
+
+// MARK: - 製作題目
+extension  ChooseColorViewController {
+    
+    // 創建題目＆選項
+    func optionsMaker(options: [String]) {
+        
+        view.addSubview(topicimage)
+        
+        for index in options.indices {
+            let button = UIButton()
+            let width = Int(view.bounds.width) / options.count
+            button.frame = CGRect(x: index * width, y: 550, width: width, height: width)
+            button.tag = index + 1 // Tag預設都是0，會抓不到index
+            button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+            view.addSubview(button)
+        }
+    }
+    
+    // 設定題目＆選項
+    func gameSetting(topic: String, options: [String]){
+        
+        topicimage.image = UIImage(named: "\(topic)")
+        
+        let suffledOptions = options.shuffled()
+        
+        for index in suffledOptions.indices {
+            
+            guard let button = self.view.viewWithTag(index + 1) as? UIButton else { return }
+            let buttonimage = UIImage(named: suffledOptions[index])
+            button.setImage(buttonimage, for: .normal)
+            button.setTitle(suffledOptions[index], for: .normal)
+            button.setTitleColor(.clear, for: .normal)
+            
+        }
     }
     
 }

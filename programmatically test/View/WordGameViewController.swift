@@ -15,7 +15,7 @@ class WordGameViewController: UIViewController {
     var timer: Timer?
     var totalTime = 10
     var timeLabel:UILabel = {
-        let timeLabel = UILabel(frame: CGRect(x: 100, y: 100, width: 300, height: 50))
+        let timeLabel = UILabel(frame: CGRect(x: 100, y: 130, width: 300, height: 50))
         timeLabel.font = UIFont.systemFont(ofSize: 30)
         timeLabel.text = ""
         return timeLabel
@@ -29,9 +29,11 @@ class WordGameViewController: UIViewController {
         
         titleLabel()
         creatGames()
+        startTime()
         makeImageViews(topic: "a1", options: games[0].options)
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .done, target: self, action: #selector(backAction))
+        view.addSubview(self.timeLabel)
     }
     
     @objc func backAction(){
@@ -58,7 +60,7 @@ class WordGameViewController: UIViewController {
     func makeImageViews(topic: String ,options: [String]) {
         
         var topicimage : UIImageView
-        topicimage = UIImageView(frame: CGRect(x: 135, y: 220, width: 150 , height: 150))
+        topicimage = UIImageView(frame: CGRect(x: 135, y: 210, width: 150 , height: 150))
         topicimage.image = UIImage(named: "a1")
         
         view.addSubview(topicimage)
@@ -91,6 +93,9 @@ class WordGameViewController: UIViewController {
                 
                 let alert = UIAlertController(title: "Bingo", message: "", preferredStyle: UIAlertController.Style.alert)
                 let okAction = UIAlertAction(title: "Go to next game", style: UIAlertAction.Style.default) { (result : UIAlertAction) -> Void in
+                    
+                    
+                    self.endTime()
                 }
                 alert.addAction(okAction)
                 self.present(alert, animated: true, completion: nil)
@@ -108,7 +113,7 @@ class WordGameViewController: UIViewController {
         
     }
     
-    // MARK: - TIMER
+    // MARK: - 倒數器
     func startTime(){
         
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
@@ -122,10 +127,10 @@ class WordGameViewController: UIViewController {
         } else {
             endTime()
             // show alert
-            let alert = UIAlertController(title: "Time's Up", message: "", preferredStyle: UIAlertController.Style.alert)
-            let okAction = UIAlertAction(title: "Try Again", style: UIAlertAction.Style.default) { (result : UIAlertAction) -> Void in
+            let alert = UIAlertController(title: "Time's Up⏱", message: "", preferredStyle: UIAlertController.Style.alert)
+            let okAction = UIAlertAction(title: "Try Again!", style: UIAlertAction.Style.default) { (result : UIAlertAction) -> Void in
                 
-                self.totalTime = 20
+                self.totalTime = 10
                 self.startTime()
                 
             }
@@ -139,7 +144,7 @@ class WordGameViewController: UIViewController {
     func endTime() {
         timer?.invalidate()
     }
-
+    
     
 }
 

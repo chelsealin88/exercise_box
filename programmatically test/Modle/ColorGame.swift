@@ -8,6 +8,7 @@
 //
 
 import Foundation
+import UIKit
 
 
 struct ColorGame {
@@ -27,3 +28,4 @@ struct ColorGame {
     }
 
 }
+
