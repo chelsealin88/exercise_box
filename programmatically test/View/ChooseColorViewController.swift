@@ -30,8 +30,8 @@ class ChooseColorViewController: UIViewController {
         
         titleLabel()
         createGames()
-        optionsMaker(options: games[1].options)
-        gameSetting(topic: "q2", options: games[1].options)
+        optionsMaker(options: games[0].options)
+        gameSetting(topic: "q1", options: games[0].options)
     }
     
     // MARK: - 標題
@@ -57,24 +57,24 @@ class ChooseColorViewController: UIViewController {
     
     // MARK: - 判斷答案
     @objc func buttonAction(_ sender: UIButton){
-        
-        guard level < 2 else { return }
-        level += 1
-        
+    
         if let title = sender.currentTitle {
             let index = title.index(before: title.endIndex)
             let answer = title[index]
             let character: Character = "4"
             if character == answer {
-                
+                level += 1
                 let alert = UIAlertController(title: "答對惹", message: "", preferredStyle: UIAlertController.Style.alert)
                 let okAction = UIAlertAction(title: "👉🏻下一關", style: UIAlertAction.Style.default) { (result : UIAlertAction) -> Void in
                     
-                    let level =  self.level
-                    self.gameSetting(topic: "q\(level)", options: self.games[0].options)
+                    if self.level < self.games.count {
+                        let level =  self.level
+                        self.gameSetting(topic: "q\(level + 1)", options: self.games[level].options)
+                    } else if self.level == self.games.count {
+                        let vc = PlusNumberViewController()
+                        self.navigationController?.pushViewController(vc, animated: true)
+                    }
                     
-                    //                    let vc = PlusNumberViewController()
-                    //                    self.navigationController?.pushViewController(vc, animated: true)
                 }
                 alert.addAction(okAction)
                 self.present(alert, animated: true, completion: nil)
