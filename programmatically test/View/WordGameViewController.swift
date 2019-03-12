@@ -10,6 +10,7 @@ import UIKit
 
 class WordGameViewController: UIViewController {
     
+    var level = 0
     var games = [WordGame]()
     
     var timer: Timer?
@@ -21,6 +22,12 @@ class WordGameViewController: UIViewController {
         return timeLabel
     }()
     
+    let topicimage : UIImageView = {
+        let image = UIImageView(frame: CGRect(x: 135, y: 210, width: 150 , height: 150))
+        return image
+    }()
+    
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +37,8 @@ class WordGameViewController: UIViewController {
         titleLabel()
         creatGames()
         startTime()
-        makeImageViews(topic: "a1", options: games[0].options)
+        optionsMaker(options: games[0].options)
+        gameSetting(topic: "a1", options: games[0].options)
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .done, target: self, action: #selector(backAction))
         view.addSubview(self.timeLabel)
@@ -38,13 +46,14 @@ class WordGameViewController: UIViewController {
     
     @objc func backAction(){
         navigationController?.popViewController(animated: true)
+        endTime()
     }
     
     func titleLabel() {
         
         var label = UILabel(frame: CGRect(x: 0, y: 60, width: 400, height: 100))
         label.textAlignment = .center
-        label.text = "請找出字面上的顏色🤔"
+        label.text = "請找出字的顏色🤔"
         label.font = UIFont.systemFont(ofSize: 20)
         view.addSubview(label)
         
@@ -53,33 +62,9 @@ class WordGameViewController: UIViewController {
     // MARK: - 產生每一局遊戲
     func creatGames() {
         let game1 = WordGame(topic: "a1", answer: 3)
+        let game2 = WordGame(topic: "a2", answer: 3)
         games.append(game1)
-        
-    }
-    
-    func makeImageViews(topic: String ,options: [String]) {
-        
-        var topicimage : UIImageView
-        topicimage = UIImageView(frame: CGRect(x: 135, y: 210, width: 150 , height: 150))
-        topicimage.image = UIImage(named: "a1")
-        
-        view.addSubview(topicimage)
-        
-        for index in options.indices {
-            let button = UIButton()
-            let width = Int(view.bounds.width) / options.count
-            button.frame = CGRect(x: index * width, y: 450, width: width, height: width)
-            let buttonimage = UIImage(named: options[index])
-            button.setImage(buttonimage, for: .normal)
-            button.setTitle(options[index], for: .normal)
-            button.setTitleColor(.clear, for: .normal)
-            button.tag = index
-            button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
-            //            #if DEBUG
-            //            print("index:",suffledOptions[index])
-            //            #endif
-            view.addSubview(button)
-        }
+        games.append(game2)
         
     }
     
@@ -90,11 +75,18 @@ class WordGameViewController: UIViewController {
             let answer = title[index]
             let character: Character = "4"
             if character == answer {
-                
+                level += 1
                 let alert = UIAlertController(title: "Bingo", message: "", preferredStyle: UIAlertController.Style.alert)
                 let okAction = UIAlertAction(title: "Go to next game", style: UIAlertAction.Style.default) { (result : UIAlertAction) -> Void in
                     
-                    
+                    if self.level < self.games.count {
+                        let level =  self.level
+                        self.gameSetting(topic: "a\(level + 1)", options: self.games[level].options)
+                       
+                    } else if self.level == self.games.count {
+                        
+                        // push to next game
+                    }
                     self.endTime()
                 }
                 alert.addAction(okAction)
@@ -148,4 +140,40 @@ class WordGameViewController: UIViewController {
     
 }
 
-
+// MARK: - 製作題目
+extension  WordGameViewController {
+    
+    // 創建題目＆選項
+    func optionsMaker(options: [String]) {
+        
+        view.addSubview(topicimage)
+        
+        for index in options.indices {
+            let button = UIButton()
+            let width = Int(view.bounds.width) / options.count
+            button.frame = CGRect(x: index * width, y: 450, width: width, height: width)
+            let buttonimage = UIImage(named: options[index])
+            button.tag = index + 1 // Tag預設都是0，會抓不到index
+            button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+            view.addSubview(button)
+        }
+    }
+    
+    // 設定題目＆選項
+    func gameSetting(topic: String, options: [String]){
+        
+        topicimage.image = UIImage(named: "\(topic)")
+        
+        let suffledOptions = options.shuffled()
+        
+        for index in suffledOptions.indices {
+            
+            guard let button = self.view.viewWithTag(index + 1) as? UIButton else { return }
+            let buttonimage = UIImage(named: suffledOptions[index])
+            button.setImage(buttonimage, for: .normal)
+            button.setTitle(suffledOptions[index], for: .normal)
+            button.setTitleColor(.clear, for: .normal)
+            
+        }
+    }
+}

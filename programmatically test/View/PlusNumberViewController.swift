@@ -34,25 +34,25 @@ class PlusNumberViewController: UIViewController {
     
     
     // MARK: - Stack View 水平
-    func setUpStackView(){
-        
-        view.addSubview(myStackView)
-        myStackView.translatesAutoresizingMaskIntoConstraints = false
-        myStackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10)
-        myStackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10)
-        myStackView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 10)
-        myStackView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -10)
-        
-        myStackView.axis = .horizontal
-        myStackView.alignment = .fill
-        myStackView.distribution = .fill
-        myStackView.spacing = 10
-        myStackView.backgroundColor = UIColor.clear
-    }
+    //    func setUpStackView(){
+    //
+    //        view.addSubview(myStackView)
+    //        myStackView.translatesAutoresizingMaskIntoConstraints = false
+    //        myStackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10)
+    //        myStackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10)
+    //        myStackView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 10)
+    //        myStackView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -10)
+    //
+    //        myStackView.axis = .horizontal
+    //        myStackView.alignment = .fill
+    //        myStackView.distribution = .fill
+    //        myStackView.spacing = 10
+    //        myStackView.backgroundColor = UIColor.clear
+    //    }
     
-    func setUpObject(){
-        //        myStackView.addArrangedSubview()
-    }
+    //    func setUpObject(){
+    //        myStackView.addArrangedSubview()
+    //    }
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -76,6 +76,7 @@ class PlusNumberViewController: UIViewController {
     
     @objc func backAction(){
         navigationController?.popToRootViewController(animated: true)
+        endTime()
     }
     
     // MARK: - 生成數字
@@ -96,7 +97,6 @@ class PlusNumberViewController: UIViewController {
         label.text = String(number2)
         label.font = UIFont.systemFont(ofSize: 40)
         view.addSubview(label)
-        
     }
     
     func plusImage() {
@@ -142,6 +142,7 @@ class PlusNumberViewController: UIViewController {
                 
                 let vc = WordGameViewController()
                 self.navigationController?.pushViewController(vc, animated: true)
+                
             }
             alert.addAction(okAction)
             self.present(alert, animated: true, completion: nil)
@@ -166,25 +167,25 @@ class PlusNumberViewController: UIViewController {
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
     }
     
-     @objc func updateTime(){
+    @objc func updateTime(){
         
         timeLabel.text = "剩餘時間: \(totalTime) 秒"
         if totalTime != 0 {
             totalTime -= 1
         } else {
             endTime()
-              // show alert
+            // show alert
             let alert = UIAlertController(title: "Time's Up", message: "", preferredStyle: UIAlertController.Style.alert)
             let okAction = UIAlertAction(title: "Try Again", style: UIAlertAction.Style.default) { (result : UIAlertAction) -> Void in
                 
                 self.ansTextField.text = ""
                 self.totalTime = 20
                 self.startTime()
-        
+                
             }
             alert.addAction(okAction)
             self.present(alert, animated: true, completion: nil)
-    
+            
         }
         
     }
@@ -192,5 +193,5 @@ class PlusNumberViewController: UIViewController {
     func endTime() {
         timer?.invalidate()
     }
-
+    
 }

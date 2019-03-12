@@ -19,12 +19,6 @@ class GameCell: UITableViewCell {
     var playItem: GameName!
     var delegate : GameCellDelegate?
     
-    //    var gameNames : GameName? {
-    //        gameNameLabel.text = gameNames?.name
-    //        return gameNames
-    //    }
-    
-    
     let gameNameLabel : UILabel = {
         let label = UILabel()
         label.textColor = UIColor.black

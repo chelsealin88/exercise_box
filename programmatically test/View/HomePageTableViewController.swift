@@ -15,7 +15,7 @@ class HomePageTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         createGameArray()
-        navigationItem.title = "Exercise Box"
+        navigationItem.title = "Exercise Box👾"
         tableView.register(GameCell.self, forCellReuseIdentifier: "cellID")
     }
     
