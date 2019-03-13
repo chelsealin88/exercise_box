@@ -18,20 +18,20 @@ struct ColorGame {
 
     init(){
         
-        var red = CGFloat.random(in: 1...255) / 255
-        var green = CGFloat.random(in: 1...255) / 255
-        var blue = CGFloat.random(in: 1...255) / 255
+        var colorOptions = [UIColor]()
         
+        // append 答案
+        let red = CGFloat.random(in: 1...255) / 255
+        let green = CGFloat.random(in: 1...255) / 255
+        let blue = CGFloat.random(in: 1...255) / 255
         let color = UIColor(red: red, green: green, blue: blue, alpha: 1)
         self.topic = color
         self.answer = color
-        // append 答案
-        var colorOptions = [UIColor]()
         colorOptions.append(color)
-        self.buttonCounts = Int.random(in: 4...6)
-        // 設定button隨機2-6個
-        for _ in 0..<self.buttonCounts {
-//            let newColor = UIColor(red: CGFloat(red + (CGFloat.random(in: 0...1).turnPlusAndMinus() * CGFloat.random(in: 1...10))/255), green: CGFloat(green + (CGFloat.random(in: 0...1).turnPlusAndMinus() * CGFloat.random(in: 1...10))/255), blue: CGFloat(blue + (CGFloat.random(in: 0...1).turnPlusAndMinus() * CGFloat.random(in: 1...10))/255), alpha: 1)
+        
+        // 設定 color 隨機
+        let buttonCount = Int.random(in: 1...4)
+        for _ in 0...buttonCount {
             let redColor = red * CGFloat.random(in: 0.8...1)
             let greenColor = green * CGFloat.random(in: 0.8...1)
             let blueColor = blue * CGFloat.random(in: 0.8...1)
@@ -39,7 +39,8 @@ struct ColorGame {
             colorOptions.append(newColor)
         }
         self.options = colorOptions.shuffled()
-        print(options)
+        self.buttonCounts = self.options.count
+        print("數量", self.buttonCounts)
     }
 }
 

@@ -10,12 +10,12 @@ import Foundation
 import UIKit
 
 struct GameName {
-    var name : String
-    var vc : UIViewController
     
-    init(name: String, vc: UIViewController) {
+    var name : String
+    
+    init(name: String) {
         self.name = name
-        self.vc = vc
+        
     }
     
 }

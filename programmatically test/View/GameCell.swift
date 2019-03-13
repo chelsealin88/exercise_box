@@ -11,13 +11,14 @@ import UIKit
 
 protocol GameCellDelegate {
     
-    func nextPage(vc: UIViewController)
+    func nextPage(indexPath: IndexPath)
 }
 
 class GameCell: UITableViewCell {
     
     var playItem: GameName!
     var delegate : GameCellDelegate?
+    var indexPath: IndexPath?
     
     let gameNameLabel : UILabel = {
         let label = UILabel()
@@ -26,16 +27,15 @@ class GameCell: UITableViewCell {
     }()
     
     
-    @objc func playColor(){
-        click()
+    @objc func click(){
+        
+        if let indexPath = indexPath {
+            delegate?.nextPage(indexPath: indexPath)
+        }
     }
     
-    func click(){
-        delegate?.nextPage(vc: playItem.vc)
-
-    }
     
-    let playColorButton : UIButton = {
+    let playButton : UIButton = {
         let button = UIButton.init(type: UIButton.ButtonType.system)
         button.setTitle("Play", for: .normal)
         button.layer.borderWidth = 2.0
@@ -48,13 +48,15 @@ class GameCell: UITableViewCell {
     }()
     
     
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        addSubview(gameNameLabel)
-        addSubview(playColorButton)
         
-        playColorButton.addTarget(self, action: #selector(playColor), for: .touchUpInside)
-        playColorButton.anchor(top: topAnchor, left: gameNameLabel.leftAnchor
+        addSubview(gameNameLabel)
+        addSubview(playButton)
+        
+        playButton.addTarget(self, action: #selector(click), for: .touchUpInside)
+        playButton.anchor(top: topAnchor, left: gameNameLabel.leftAnchor
             , bottom: bottomAnchor, right: rightAnchor, paddingTop: 15.0, paddingLeft: 300.0, paddingBottom: 15.0, paddingRight: 10.0, width: 100, height: 30, enableInsets: false)
     }
     
@@ -63,7 +65,5 @@ class GameCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
-}
 
+}

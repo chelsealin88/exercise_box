@@ -14,7 +14,7 @@ class ChooseColorViewController: UIViewController {
     var games = [ColorGame]()
     
     let topicView : UIView = {
-        let view = UIView(frame: CGRect(x: 0, y: 150, width: 500 , height: 300))
+        let view = UIView(frame: CGRect(x: 0, y: 150, width: UIScreen.main.bounds.width , height: 300))
         return view
     }()
     
@@ -25,18 +25,18 @@ class ChooseColorViewController: UIViewController {
         view.backgroundColor = .white
         
         titleLabel()
-        createGames()
-        setUpGameObject()
-        creatButtons(game: .init())
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .done, target: self, action: #selector(backAction))
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        buttonColorSetting(game: .init())
+        createGames()
+        setUpGameObject()
+        creatButtons(game: games[level])
+        buttonColorSetting(game: games[level])
     }
-
+    
     @objc func backAction(){
         navigationController?.popViewController(animated: true)
     }
@@ -52,21 +52,26 @@ class ChooseColorViewController: UIViewController {
         
     }
     
+    func removeButtons(game: ColorGame) {
+        
+        for index in game.options.indices {
+            guard let button = self.view.viewWithTag(index + 1) as? UIButton else { return }
+            button.removeFromSuperview()
+        }
+    }
+    
     // 創建Button Without Color
     fileprivate func creatButtons(game: ColorGame){
-        
-        let randomNumber = game.buttonCounts
-        
-        for index in 0...randomNumber {
+        let count = game.options.count
+        for index in game.options.indices {
             let button = UIButton()
-            let width = self.view.bounds.width / CGFloat(randomNumber)
+            let width = self.view.bounds.width / CGFloat(count)
             button.frame = CGRect(x: width * CGFloat(index), y: 500, width: width, height: width)
             button.tag = index + 1
             button.setTitle("\(index + 1)", for: .normal)
             button.layer.cornerRadius = button.bounds.size.width / 2
             button.clipsToBounds = true
             button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
-            
             view.addSubview(button)
         }
     }
@@ -74,101 +79,70 @@ class ChooseColorViewController: UIViewController {
     fileprivate func setUpGameObject(){
         
         self.view.addSubview(self.topicView)
-
+        
     }
     
     fileprivate func buttonColorSetting(game: ColorGame) {
         
         topicView.backgroundColor = game.topic
-    
+        
         for index in game.options.indices {
             guard let button = self.view.viewWithTag(index + 1) as? UIButton else { return }
             button.backgroundColor = game.options[index]
-            print(game.options[index])
+        }
     }
-}
     
     // MARK: - 產生每一局遊戲
     func createGames() {
-        let game1 = ColorGame.init()
-        games.append(game1)
-        
+        for _ in 1...3 {
+            let game = ColorGame()
+            games.append(game)
+        }
     }
     
     // MARK: - 判斷答案
     @objc func buttonAction(_ sender: UIButton){
         
-        if let topic = topicView.backgroundColor {
-            let answer = sender.backgroundColor
-            if topic == answer {
-
-                let alert = UIAlertController(title: "答對惹", message: "", preferredStyle: UIAlertController.Style.alert)
-                let okAction = UIAlertAction(title: "👉🏻下一關", style: UIAlertAction.Style.default) { (result : UIAlertAction) -> Void in
+        print(sender.tag)
+        let game = games[level]
+        let answer = game.answer
+        let selectedColor = games[level].options[sender.tag - 1]
+        
+        if answer == selectedColor {
+            
+            let alert = UIAlertController(title: "答對惹", message: "", preferredStyle: UIAlertController.Style.alert)
+            let okAction = UIAlertAction(title: "👉🏻下一關", style: UIAlertAction.Style.default) { (result : UIAlertAction) -> Void in
+                self.removeButtons(game: game)
+                self.level += 1
+                if self.level < self.games.count {
+                    let newGame = self.games[self.level]
+                    self.creatButtons(game: newGame)
+                    self.buttonColorSetting(game: newGame)
+                } else {
                     
                     let vc = PlusNumberViewController()
                     self.navigationController?.pushViewController(vc, animated: true)
-                    
                 }
                 
-                alert.addAction(okAction)
-                self.present(alert, animated: true, completion: nil)
-                
-            } else { // 判斷錯誤答案
-                // TODO: 失敗 重新開始？回到遊戲列表
-                let alert = UIAlertController(title: "有障礙？", message: "", preferredStyle: UIAlertController.Style.alert)
-                let cancelAction = UIAlertAction(title: "再試一次", style: .default, handler: nil)
-                
-                let restartAction = UIAlertAction(title: "重新開始", style: UIAlertAction.Style.default) { (result : UIAlertAction) -> Void in
-                    
-                    self.navigationController?.popToRootViewController(animated: true)
-                }
-                alert.addAction(restartAction)
-                alert.addAction(cancelAction)
-                self.present(alert, animated: true, completion: nil)
             }
+            
+            alert.addAction(okAction)
+            self.present(alert, animated: true, completion: nil)
+            
+        } else { // 判斷錯誤答案
+            // TODO: 失敗 重新開始？回到遊戲列表
+            let alert = UIAlertController(title: "有障礙？", message: "", preferredStyle: UIAlertController.Style.alert)
+            let cancelAction = UIAlertAction(title: "再試一次", style: .default, handler: nil)
+            
+            let restartAction = UIAlertAction(title: "回到首頁", style: UIAlertAction.Style.default) { (result : UIAlertAction) -> Void in
+                
+                self.navigationController?.popToRootViewController(animated: true)
+            }
+            alert.addAction(restartAction)
+            alert.addAction(cancelAction)
+            self.present(alert, animated: true, completion: nil)
         }
     }
-    
-    
-    //                if let title = sender.currentTitle {
-    //                    let index = title.index(before: title.endIndex)
-    //                    let answer = title[index]
-    //                    let character: Character = "4"
-    //                    if character == answer {
-    //                        level += 1
-    //                        let alert = UIAlertController(title: "答對惹", message: "", preferredStyle: UIAlertController.Style.alert)
-    //                        let okAction = UIAlertAction(title: "👉🏻下一關", style: UIAlertAction.Style.default) { (result : UIAlertAction) -> Void in
-    //
-    //                            if self.level < self.games.count {
-    //                                let level =  self.level
-    //                                self.gameSetting(topic: "q\(level + 1)", options: self.games[level].options)
-    //                            } else if self.level == self.games.count {
-    //                                let vc = PlusNumberViewController()
-    //                                self.navigationController?.pushViewController(vc, animated: true)
-    //                            }
-    //
-    //                        }
-    //                        alert.addAction(okAction)
-    //                        self.present(alert, animated: true, completion: nil)
-    //
-    //                    } else { // 判斷錯誤答案
-    //                        // TODO: 失敗 重新開始？回到遊戲列表
-    //                        let alert = UIAlertController(title: "有障礙？", message: "", preferredStyle: UIAlertController.Style.alert)
-    //                        let cancelAction = UIAlertAction(title: "再試一次", style: .default, handler: nil)
-    //
-    //                        let restartAction = UIAlertAction(title: "重新開始", style: UIAlertAction.Style.default) { (result : UIAlertAction) -> Void in
-    //
-    //                            self.navigationController?.popToRootViewController(animated: true)
-    //                        }
-    //                        alert.addAction(restartAction)
-    //                        alert.addAction(cancelAction)
-    //                        self.present(alert, animated: true, completion: nil)
-    //                    }
-    //                }
-    //
-    //    }
-    
-    
 }
 
 

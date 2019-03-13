@@ -45,7 +45,7 @@ class WordGameViewController: UIViewController {
     }
     
     @objc func backAction(){
-        navigationController?.popViewController(animated: true)
+        navigationController?.popToRootViewController(animated: true)
         endTime()
     }
     
@@ -76,8 +76,8 @@ class WordGameViewController: UIViewController {
             let character: Character = "4"
             if character == answer {
                 level += 1
-                let alert = UIAlertController(title: "Bingo", message: "", preferredStyle: UIAlertController.Style.alert)
-                let okAction = UIAlertAction(title: "Go to next game", style: UIAlertAction.Style.default) { (result : UIAlertAction) -> Void in
+                let alert = UIAlertController(title: "Bingo🤡", message: "", preferredStyle: UIAlertController.Style.alert)
+                let okAction = UIAlertAction(title: "下一關GO GO!", style: UIAlertAction.Style.default) { (result : UIAlertAction) -> Void in
                     
                     if self.level < self.games.count {
                         let level =  self.level
@@ -95,10 +95,14 @@ class WordGameViewController: UIViewController {
             } else { // Wrong Ans
                 
                 let alert = UIAlertController(title: "你是智障嗎？", message: "", preferredStyle: UIAlertController.Style.alert)
-                let okAction = UIAlertAction(title: "再玩一次", style: UIAlertAction.Style.default) { (result : UIAlertAction) -> Void in
+                let cancelAction = UIAlertAction(title: "再試一次", style: .default, handler: nil)
+                let restartAction = UIAlertAction(title: "返回首頁", style: UIAlertAction.Style.default) { (result : UIAlertAction) -> Void in
                     
+                    self.navigationController?.popToRootViewController(animated: true)
                 }
-                alert.addAction(okAction)
+
+                alert.addAction(restartAction)
+                alert.addAction(cancelAction)
                 self.present(alert, animated: true, completion: nil)
             }
         }
