@@ -32,6 +32,7 @@ class GameCell: UITableViewCell {
     
     func click(){
         delegate?.nextPage(vc: playItem.vc)
+
     }
     
     let playColorButton : UIButton = {
